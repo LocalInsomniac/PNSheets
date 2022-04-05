@@ -1,6 +1,6 @@
 # PNSheets
 PNSheets is a compact texture page library for GameMaker, intended as the 
-modern equivalent for Braffolk's [Custom Sprite Framework](https://github.com/GameMakerDiscord/custom-sprite-framework/) 
+modern equivalent of Braffolk's [Custom Sprite Framework](https://github.com/GameMakerDiscord/custom-sprite-framework/) 
 for GameMaker Studio 1.4.
 
 By using `sprite_add`, GameMaker creates an extra texture page for every sprite 
