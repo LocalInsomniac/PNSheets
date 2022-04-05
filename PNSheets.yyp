@@ -1,7 +1,10 @@
 {
   "resources": [
     {"id":{"name":"pns_cache_add","path":"scripts/pns_cache_add/pns_cache_add.yy",},"order":0,},
+    {"id":{"name":"pns_sprite_draw","path":"scripts/pns_sprite_draw/pns_sprite_draw.yy",},"order":1,},
     {"id":{"name":"__pns_system","path":"scripts/__pns_system/__pns_system.yy",},"order":0,},
+    {"id":{"name":"pns_sprite_get","path":"scripts/pns_sprite_get/pns_sprite_get.yy",},"order":0,},
+    {"id":{"name":"pns_sprite_draw_ext","path":"scripts/pns_sprite_draw_ext/pns_sprite_draw_ext.yy",},"order":2,},
     {"id":{"name":"pns_sheet_create","path":"scripts/pns_sheet_create/pns_sheet_create.yy",},"order":0,},
     {"id":{"name":"pns_sheet_destroy","path":"scripts/pns_sheet_destroy/pns_sheet_destroy.yy",},"order":1,},
     {"id":{"name":"pns_cache_clear","path":"scripts/pns_cache_clear/pns_cache_clear.yy",},"order":1,},
@@ -40,6 +43,7 @@
     {"folderPath":"folders/PNSheets.yy","order":15,"resourceVersion":"1.0","name":"PNSheets","tags":[],"resourceType":"GMFolder",},
     {"folderPath":"folders/PNSheets/Cache.yy","order":1,"resourceVersion":"1.0","name":"Cache","tags":[],"resourceType":"GMFolder",},
     {"folderPath":"folders/PNSheets/Sheets.yy","order":2,"resourceVersion":"1.0","name":"Sheets","tags":[],"resourceType":"GMFolder",},
+    {"folderPath":"folders/PNSheets/Sprites.yy","order":4,"resourceVersion":"1.0","name":"Sprites","tags":[],"resourceType":"GMFolder",},
   ],
   "AudioGroups": [
     {"targets":-1,"resourceVersion":"1.3","name":"audiogroup_default","resourceType":"GMAudioGroup",},

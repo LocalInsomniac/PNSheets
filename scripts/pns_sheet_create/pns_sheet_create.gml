@@ -92,7 +92,7 @@ function pns_sheet_create(width, height) {
 						// The image fits in this area, occupy it.
 						if frame < frames {
 							draw_sprite(sprite, frame, page_x, page_y)
-							array_push(current_frames, [current_page, page_x, page_y])
+							array_push(current_frames, [array_length(pages), page_x, page_y])
 							ds_grid_set_region(page_areas, page_x, page_y, x2, y2, true);
 							++frame
 						}
