@@ -209,7 +209,10 @@ function pns_sheet_create(width, height) {
 		var i = 0
 		
 		repeat added_sprites_n {
-			sprite_delete(sprites[? added_sprites[i]][__PNSSpriteData.SPRITE]);
+			var sprite = sprites[? added_sprites[i]]
+			
+			sprite_delete(sprite[__PNSSpriteData.SPRITE])
+			sprite[@ __PNSSpriteData.SPRITE] = undefined;
 			++i
 		}
 	}

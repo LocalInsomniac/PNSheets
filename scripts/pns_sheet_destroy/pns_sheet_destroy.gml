@@ -16,9 +16,11 @@ function pns_sheet_destroy(sheet) {
 	
 	repeat array_length(added_sprites) {
 		var name = sheet[i]
-		var sprite = sprites[? name]
 		
-		sprite_delete(sprite[__PNSSpriteData.SPRITE])
+		if __PNS_ALLOW_TEXTURES {
+			sprite_delete(sprites[? name][__PNSSpriteData.SPRITE])
+		}
+		
 		ds_map_delete(sprites, name);
 		++i
 	}

@@ -5,6 +5,7 @@
     {"id":{"name":"__pns_system","path":"scripts/__pns_system/__pns_system.yy",},"order":0,},
     {"id":{"name":"pns_sprite_get","path":"scripts/pns_sprite_get/pns_sprite_get.yy",},"order":0,},
     {"id":{"name":"pns_sprite_draw_ext","path":"scripts/pns_sprite_draw_ext/pns_sprite_draw_ext.yy",},"order":2,},
+    {"id":{"name":"__pns_config","path":"scripts/__pns_config/__pns_config.yy",},"order":5,},
     {"id":{"name":"pns_sheet_create","path":"scripts/pns_sheet_create/pns_sheet_create.yy",},"order":0,},
     {"id":{"name":"pns_sheet_destroy","path":"scripts/pns_sheet_destroy/pns_sheet_destroy.yy",},"order":1,},
     {"id":{"name":"pns_cache_clear","path":"scripts/pns_cache_clear/pns_cache_clear.yy",},"order":1,},

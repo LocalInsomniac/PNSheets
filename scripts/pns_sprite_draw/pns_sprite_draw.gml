@@ -1,4 +1,4 @@
-/// @desc Draw a sprite directly from a sheet.
+/// @desc Draw a sprite directly from its sheet.
 /// @param {array} sprite The data array of the sprite to draw.
 /// @param {real} frame The frame of the sprite.
 /// @param {real} x The X position to draw at.
