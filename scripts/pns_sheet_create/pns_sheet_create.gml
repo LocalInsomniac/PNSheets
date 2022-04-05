@@ -132,6 +132,19 @@ function pns_sheet_create(width, height) {
 	array_push(pages, sprite_create_from_surface(current_page, 0, 0, width, height, false, false, 0, 0))
 	surface_free(current_page)
 	ds_grid_destroy(page_areas);
+	
+	var added_sprites_n = array_length(added_sprites)
+	
+	if not __PNS_ALLOW_TEXTURES {
+		var i = 0
+		
+		repeat added_sprites_n {
+			sprite_delete(sprites[? added_sprites[i]][__PNSSpriteData.SPRITE]);
+			++i
+		}
+	}
+	
+	show_debug_message("PNSheets: Created sheet " + string(sheet_id) + " (" + string(width) + "x" + string(height) + ") with " + string(array_length(pages)) + " pages and " + string(added_sprites_n) + " sprites");
 	++sheet_id
 	
 	return sheet
