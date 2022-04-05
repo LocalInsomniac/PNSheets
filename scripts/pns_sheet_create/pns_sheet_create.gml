@@ -4,6 +4,7 @@
 function pns_sheet_create(width, height) {
 	static sheet_id = 0
 	
+	var time = get_timer()
 	var cache = global.__pns_cache
 	
 	if width <= 0 or height <= 0 or not ds_stack_size(cache) {
@@ -18,7 +19,11 @@ function pns_sheet_create(width, height) {
 	var added_sprites = []
 	
 	var pages = []
-	var page_areas = ds_grid_create(width, height)
+	var page_size = width * height
+	var page_areas = buffer_create(page_size, buffer_fast, 1)
+	
+	buffer_fill(page_areas, 0, buffer_u8, false, page_size)
+	
 	var current_page = surface_create(width, height)
 	
 	sheet[@ __PNSSheetData.PAGES] = pages
@@ -70,30 +75,27 @@ function pns_sheet_create(width, height) {
 		current_sprite[@ __PNSSpriteData.HEIGHT] = spr_height
 		current_sprite[@ __PNSSpriteData.SPRITE] = sprite
 		
-		show_debug_message(frames)
-		
 		var frame = 0
 		var occupied
+		var area_width = spr_width - 1
+		var area_height = spr_height - 1
 		
 		while frame < frames {
 			// Brute force through the page until we find an empty area.
 			var page_y = 0
 			
-			repeat height - spr_height - 1 {
+			repeat height - area_height {
 				var page_x = 0
 				
 				occupied = false
 				
-				repeat width - spr_width - 1 {
-					var x2 = page_x + spr_width - 1
-					var y2 = page_y + spr_height - 1
-					
-					if ds_grid_get_sum(page_areas, page_x, page_y, x2, y2) == false {
+				repeat width - area_width {
+					if __pns_area_free(page_areas, page_x, page_y, spr_width, spr_height, width) {
 						// The image fits in this area, occupy it.
 						if frame < frames {
 							draw_sprite(sprite, frame, page_x, page_y)
 							array_push(current_frames, [array_length(pages), page_x, page_y])
-							ds_grid_set_region(page_areas, page_x, page_y, x2, y2, true);
+							__pns_area_fill(page_areas, page_x, page_y, spr_width, spr_height, width);
 							++frame
 						}
 						
@@ -117,7 +119,7 @@ function pns_sheet_create(width, height) {
 				surface_reset_target()
 				array_push(pages, sprite_create_from_surface(current_page, 0, 0, width, height, false, false, 0, 0))
 				surface_free(current_page)
-				ds_grid_clear(page_areas, false)
+				buffer_fill(page_areas, 0, buffer_u8, false, page_size)
 				current_page = surface_create(width, height)
 				surface_set_target(current_page)
 				draw_clear_alpha(c_black, 0)
@@ -131,7 +133,7 @@ function pns_sheet_create(width, height) {
 	surface_reset_target()
 	array_push(pages, sprite_create_from_surface(current_page, 0, 0, width, height, false, false, 0, 0))
 	surface_free(current_page)
-	ds_grid_destroy(page_areas);
+	buffer_delete(page_areas)
 	
 	var added_sprites_n = array_length(added_sprites)
 	
@@ -144,7 +146,7 @@ function pns_sheet_create(width, height) {
 		}
 	}
 	
-	show_debug_message("PNSheets: Created sheet " + string(sheet_id) + " (" + string(width) + "x" + string(height) + ") with " + string(array_length(pages)) + " pages and " + string(added_sprites_n) + " sprites");
+	show_debug_message("PNSheets: Created sheet " + string(sheet_id) + " (" + string(width) + "x" + string(height) + ") with " + string(array_length(pages)) + " pages and " + string(added_sprites_n) + " sprites in " + string(get_timer() - time) + " us");
 	++sheet_id
 	
 	return sheet
