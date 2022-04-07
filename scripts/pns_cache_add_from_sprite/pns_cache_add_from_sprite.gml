@@ -9,6 +9,7 @@ function pns_cache_add_from_sprite(name, sprite, x_offset, y_offset) {
 		return false
 	}
 	
+	// Setting the sprite offset to 0 for better handling
 	if sprite_get_xoffset(sprite) != 0 or sprite_get_yoffset(sprite) != 0 {
 		sprite_set_offset(0, 0);
 	}
