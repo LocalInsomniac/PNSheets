@@ -13,7 +13,7 @@ function pns_cache_add_from_file(filename, frames, no_background, smooth_edges, 
 	
 	// Don't apply the sprite's offset, so we can easily add it to the sheets.
 	var name = filename_name(filename)
-	var sprite = sprite_add(filename, frames, no_background, smooth_edges, 0, 0)
+	var sprite = sprite_add(filename, frames, no_background, smooth_edges, x_offset, y_offset)
 	
-	return pns_cache_add_from_sprite(name, sprite, x_offset, y_offset)
+	return pns_cache_add_from_sprite(name, sprite)
 }

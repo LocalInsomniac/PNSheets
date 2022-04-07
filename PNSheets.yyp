@@ -2,6 +2,7 @@
   "resources": [
     {"id":{"name":"pns_cache_add","path":"scripts/pns_cache_add/pns_cache_add.yy",},"order":0,},
     {"id":{"name":"pns_sprite_draw","path":"scripts/pns_sprite_draw/pns_sprite_draw.yy",},"order":1,},
+    {"id":{"name":"sprTest","path":"sprites/sprTest/sprTest.yy",},"order":0,},
     {"id":{"name":"__pns_system","path":"scripts/__pns_system/__pns_system.yy",},"order":0,},
     {"id":{"name":"pns_cache_add_from_file","path":"scripts/pns_cache_add_from_file/pns_cache_add_from_file.yy",},"order":3,},
     {"id":{"name":"pns_sprite_get","path":"scripts/pns_sprite_get/pns_sprite_get.yy",},"order":0,},
