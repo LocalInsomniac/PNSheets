@@ -18,10 +18,12 @@ Special thanks to **TabularElf** for giving tips throughout research.
 
 # Functions
 ## Cache
-| Function                                                                           | Returns | Description                                                 |
-| ---------------------------------------------------------------------------------- |:-------:| -----------------------------------------------------------:|
-| `pns_cache_add(filename, frames, no_background, smooth_edges, x_offset, y_offset)` | `bool`  | Adds an external sprite to the cache.                       |
-| `pns_cache_clear()`                                                                | `N/A`   | Clears the cache, freeing any loaded sprite in the process. |
+| Function                                                                                       | Returns | Description                                                 |
+| ---------------------------------------------------------------------------------------------- |:-------:| -----------------------------------------------------------:|
+| `pns_cache_add_from_file(filename, frames, no_background, smooth_edges, x_offset, y_offset)`   | `bool`  | Adds an external sprite to the cache.                       |
+| `pns_cache_add(filename, frames, no_background, smooth_edges, x_offset, y_offset)`             | `bool`  | Alias for pns_cache_add_from_file.                          |
+| `pns_cache_add_from_sprite(filename, frames, no_background, smooth_edges, x_offset, y_offset)` | `bool`  | Adds a sprite from any source to the cache.                 |
+| `pns_cache_clear()`                                                                            | `N/A`   | Clears the cache, freeing any loaded sprite in the process. |
 
 ## Sheets
 | Function                          | Returns                | Description                                                          |
