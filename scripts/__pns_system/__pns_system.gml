@@ -1,5 +1,5 @@
-#macro __PNS_VERSION "1.0"
-#macro __PNS_DATE "2022.4.5"
+#macro __PNS_VERSION "1.1"
+#macro __PNS_DATE "2022.4.21"
 
 enum __PNSCacheData {
 	NAME,
@@ -11,6 +11,7 @@ enum __PNSCacheData {
 enum __PNSSheetData {
 	PAGES,
 	SPRITES,
+	TEXTURES,
 }
 
 enum __PNSSpriteData {
@@ -32,6 +33,30 @@ enum __PNSFrameData {
 
 global.__pns_cache = ds_stack_create()
 global.__pns_sprites = ds_map_create()
+
+/// @desc Get the name of the file without the extension. Return the name.
+/// @param {string} fname The name of the file.
+function __pns_filename_name(fname) {
+	gml_pragma("forceinline")
+	
+	var pos = string_length(fname)
+	
+	while pos > 1 {
+	    if string_char_at(fname, pos) == "." {
+	        fname = string_copy(fname, 1, pos - 1)
+			
+	        break
+	    }
+		
+	    --pos
+	}
+	
+	return fname
+}
+
+function __pns_ceil_power2(value) {
+	return power(2, ceil(log2(value)))
+}
 
 /// @desc Check if the area within the current texture page is unoccupied. Return a boolean.
 /// @param {buffer} buffer The page area buffer to check.
