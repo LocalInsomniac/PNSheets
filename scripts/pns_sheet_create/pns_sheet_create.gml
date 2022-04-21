@@ -61,15 +61,19 @@ function pns_sheet_create(width, height) {
 	var added_sprites = []
 	
 	var pages = []
+	var textures = []
 	var page_size = width * height
 	var page_areas = buffer_create(page_size, buffer_fast, 1)
 	
 	buffer_fill(page_areas, 0, buffer_u8, false, page_size)
 	
-	var current_page = surface_create(width, height)
+	var surface_width = __pns_ceil_power2(width)
+	var surface_height = __pns_ceil_power2(height)
+	var current_page = surface_create(surface_width, surface_height)
 	
 	sheet[@ __PNSSheetData.PAGES] = pages
 	sheet[@ __PNSSheetData.SPRITES] = added_sprites
+	sheet[@ __PNSSheetData.TEXTURES] = textures
 	surface_set_target(current_page)
 	draw_clear_alpha(c_black, 0)
 	
@@ -137,7 +141,8 @@ function pns_sheet_create(width, height) {
 						if frame < frames {
 							draw_sprite(sprite, frame, page_x, page_y)
 							array_push(current_frames, [array_length(pages), page_x, page_y])
-							__pns_area_fill(page_areas, page_x, page_y, spr_width, spr_height, width);
+							__pns_area_fill(page_areas, page_x, page_y, spr_width, spr_height, width)
+							occupied = false;
 							++frame
 						}
 						
@@ -159,10 +164,14 @@ function pns_sheet_create(width, height) {
 			if occupied {
 				// There's no space left in the texture page, create a new one.
 				surface_reset_target()
-				array_push(pages, sprite_create_from_surface(current_page, 0, 0, width, height, false, false, 0, 0))
+				
+				var page_sprite = sprite_create_from_surface(current_page, 0, 0, width, height, false, false, 0, 0)
+				
+				array_push(pages, page_sprite)
+				array_push(textures, sprite_get_texture(page_sprite, 0))
 				surface_free(current_page)
 				buffer_fill(page_areas, 0, buffer_u8, false, page_size)
-				current_page = surface_create(width, height)
+				current_page = surface_create(surface_width, surface_height)
 				surface_set_target(current_page)
 				draw_clear_alpha(c_black, 0)
 			}
@@ -173,7 +182,11 @@ function pns_sheet_create(width, height) {
 	}
 	
 	surface_reset_target()
-	array_push(pages, sprite_create_from_surface(current_page, 0, 0, width, height, false, false, 0, 0))
+	
+	var page_sprite = sprite_create_from_surface(current_page, 0, 0, width, height, false, false, 0, 0)
+				
+	array_push(pages, page_sprite)
+	array_push(textures, sprite_get_texture(page_sprite, 0))
 	surface_free(current_page)
 	buffer_delete(page_areas)
 	
