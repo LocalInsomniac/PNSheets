@@ -6,5 +6,7 @@
 /// @param {real} x_offset The X offset for each frame of the sprite.
 /// @param {real} y_offset The Y offset for each frame of the sprite.
 function pns_cache_add(filename, frames, no_background, smooth_edges, x_offset, y_offset) {
+	gml_pragma("forceinline")
+	
 	return pns_cache_add_from_file(filename, frames, no_background, smooth_edges, x_offset, y_offset)
 }
