@@ -2,7 +2,7 @@
 function pns_cache_clear() {
 	var cache = global.__pns_cache
 	
-	repeat ds_stack_size(cache) {
-		sprite_delete(ds_stack_pop(cache))
+	repeat ds_priority_size(cache) {
+		sprite_delete(ds_priority_delete_min(cache))
 	}
 }

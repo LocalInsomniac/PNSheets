@@ -31,7 +31,7 @@ enum __PNSFrameData {
 	Y,
 }
 
-global.__pns_cache = ds_stack_create()
+global.__pns_cache = ds_priority_create()
 global.__pns_sprites = ds_map_create()
 
 /// @desc Get the name of the file without the extension. Return the name.
@@ -55,6 +55,8 @@ function __pns_filename_name(fname) {
 }
 
 function __pns_ceil_power2(value) {
+	gml_pragma("forceinline")
+	
 	return power(2, ceil(log2(value)))
 }
 

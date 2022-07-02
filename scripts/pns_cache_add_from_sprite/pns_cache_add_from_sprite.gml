@@ -7,7 +7,7 @@ function pns_cache_add_from_sprite(name, sprite) {
 		return false
 	}
 	
-	ds_stack_push(global.__pns_cache, [name, sprite, sprite_get_xoffset(sprite), sprite_get_yoffset(sprite)])
+	ds_priority_add(global.__pns_cache, [name, sprite, sprite_get_xoffset(sprite), sprite_get_yoffset(sprite)], sprite_get_width(sprite) * sprite_get_height(sprite))
 	// Reset the sprite's offset, so we can easily add it to the sheets.
 	sprite_set_offset(sprite, 0, 0)
 	show_debug_message("PNSheets: Added sprite '" + name + "' to cache")

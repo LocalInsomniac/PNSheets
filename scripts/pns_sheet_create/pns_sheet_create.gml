@@ -7,7 +7,7 @@ function pns_sheet_create(width, height) {
 	var time = get_timer()
 	var cache = global.__pns_cache
 	
-	if width <= 0 or height <= 0 or not ds_stack_size(cache) {
+	if width <= 0 or height <= 0 or not ds_priority_size(cache) {
 		// Invalid, abort.
 		return undefined
 	}
@@ -77,9 +77,10 @@ function pns_sheet_create(width, height) {
 	surface_set_target(current_page)
 	draw_clear_alpha(c_black, 0)
 	
-	// Loop through the cache and pop every sprite into the current texture page.
-	repeat ds_stack_size(cache) {
-		var cache_sprite = ds_stack_pop(cache)
+	/* Loop through the cache and add every sprite (from largest to smallest) into
+	   the current texture page. */
+	repeat ds_priority_size(cache) {
+		var cache_sprite = ds_priority_delete_max(cache)
 		
 		var name = cache_sprite[__PNSCacheData.NAME]
 		var sprite = cache_sprite[__PNSCacheData.SPRITE]
