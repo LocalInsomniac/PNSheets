@@ -89,7 +89,6 @@ function pns_sheet_create(width, height) {
 		
 		if ds_map_exists(sprites, name) {
 			// This sprite already exists on a different sprite sheet, skip it.
-			show_error("FUUUCK! " + name, true)
 			sprite_delete(sprite)
 			
 			continue
