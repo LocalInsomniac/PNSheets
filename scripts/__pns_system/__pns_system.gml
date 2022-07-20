@@ -12,6 +12,7 @@ enum __PNSSheetData {
 	PAGES,
 	SPRITES,
 	TEXTURES,
+	__SIZE,
 }
 
 enum __PNSSpriteData {
@@ -22,13 +23,18 @@ enum __PNSSpriteData {
 	Y_OFFSET,
 	WIDTH,
 	HEIGHT,
+	U,
+	V,
 	SPRITE,
+	__SIZE,
 }
 
 enum __PNSFrameData {
 	PAGE,
 	X,
 	Y,
+	U,
+	V,
 }
 
 global.__pns_cache = ds_priority_create()

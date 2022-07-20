@@ -12,6 +12,9 @@ function pns_sheet_create(width, height) {
 		return undefined
 	}
 	
+	width = __pns_ceil_power2(width)
+	height = __pns_ceil_power2(height)
+	
 	// Reset GPU state.
     var _gpu_blend = gpu_get_blendenable()
 	var _gpu_blendmode = gpu_get_blendmode_ext_sepalpha()
@@ -54,22 +57,21 @@ function pns_sheet_create(width, height) {
 	surface_depth_disable(true)
 	
 	// Prepare the sprite sheet.
-	var sheet = []
+	var sheet = array_create(__PNSSheetData.__SIZE)
 	
 	// Prepare texture pages for the sprite sheet.
 	var sprites = global.__pns_sprites
 	var added_sprites = []
 	
 	var pages = []
+	var page_index = 0
 	var textures = []
 	var page_size = width * height
 	var page_areas = buffer_create(page_size, buffer_fast, 1)
 	
 	buffer_fill(page_areas, 0, buffer_u8, false, page_size)
 	
-	var surface_width = __pns_ceil_power2(width)
-	var surface_height = __pns_ceil_power2(height)
-	var current_page = surface_create(surface_width, surface_height)
+	var current_page = surface_create(width, height)
 	
 	sheet[@ __PNSSheetData.PAGES] = pages
 	sheet[@ __PNSSheetData.SPRITES] = added_sprites
@@ -87,6 +89,7 @@ function pns_sheet_create(width, height) {
 		
 		if ds_map_exists(sprites, name) {
 			// This sprite already exists on a different sprite sheet, skip it.
+			show_error("FUUUCK! " + name, true)
 			sprite_delete(sprite)
 			
 			continue
@@ -103,7 +106,7 @@ function pns_sheet_create(width, height) {
 		}
 		
 		// Find an empty area in the texture page and place the sprite's frames in it.
-		var current_sprite = []
+		var current_sprite = array_create(__PNSSpriteData.__SIZE)
 		var current_frames = []
 		
 		current_sprite[@ __PNSSpriteData.SHEET] = sheet
@@ -120,6 +123,8 @@ function pns_sheet_create(width, height) {
 		current_sprite[@ __PNSSpriteData.Y_OFFSET] = y_offset
 		current_sprite[@ __PNSSpriteData.WIDTH] = spr_width
 		current_sprite[@ __PNSSpriteData.HEIGHT] = spr_height
+		current_sprite[@ __PNSSpriteData.U] = spr_width / width
+		current_sprite[@ __PNSSpriteData.V] = spr_height / height
 		current_sprite[@ __PNSSpriteData.SPRITE] = sprite
 		
 		var frame = 0
@@ -141,7 +146,7 @@ function pns_sheet_create(width, height) {
 						// The image fits in this area, occupy it.
 						if frame < frames {
 							draw_sprite(sprite, frame, page_x, page_y)
-							array_push(current_frames, [array_length(pages), page_x, page_y])
+							array_push(current_frames, [page_index, page_x, page_y, page_x / width, page_y / height])
 							__pns_area_fill(page_areas, page_x, page_y, spr_width, spr_height, width)
 							occupied = false;
 							++frame
@@ -168,11 +173,12 @@ function pns_sheet_create(width, height) {
 				
 				var page_sprite = sprite_create_from_surface(current_page, 0, 0, width, height, false, false, 0, 0)
 				
-				array_push(pages, page_sprite)
+				array_push(pages, page_sprite);
+				++page_index
 				array_push(textures, sprite_get_texture(page_sprite, 0))
 				surface_free(current_page)
 				buffer_fill(page_areas, 0, buffer_u8, false, page_size)
-				current_page = surface_create(surface_width, surface_height)
+				current_page = surface_create(width, height)
 				surface_set_target(current_page)
 				draw_clear_alpha(c_black, 0)
 			}
@@ -186,7 +192,8 @@ function pns_sheet_create(width, height) {
 	
 	var page_sprite = sprite_create_from_surface(current_page, 0, 0, width, height, false, false, 0, 0)
 				
-	array_push(pages, page_sprite)
+	array_push(pages, page_sprite);
+	++page_index
 	array_push(textures, sprite_get_texture(page_sprite, 0))
 	surface_free(current_page)
 	buffer_delete(page_areas)
@@ -218,20 +225,17 @@ function pns_sheet_create(width, height) {
 	
 	// Delete original copies of the sprites if needed.
 	var added_sprites_n = array_length(added_sprites)
+	var i = 0
 	
-	if not __PNS_ALLOW_TEXTURES {
-		var i = 0
+	repeat added_sprites_n {
+		var sprite = sprites[? added_sprites[i]]
 		
-		repeat added_sprites_n {
-			var sprite = sprites[? added_sprites[i]]
-			
-			sprite_delete(sprite[__PNSSpriteData.SPRITE])
-			sprite[@ __PNSSpriteData.SPRITE] = undefined;
-			++i
-		}
+		sprite_delete(sprite[__PNSSpriteData.SPRITE])
+		sprite[@ __PNSSpriteData.SPRITE] = undefined;
+		++i
 	}
 	
-	show_debug_message("PNSheets: Created sheet " + string(sheet_id) + " (" + string(width) + "x" + string(height) + ") with " + string(array_length(pages)) + " pages and " + string(added_sprites_n) + " sprites in " + string(get_timer() - time) + " microseconds");
+	show_debug_message("PNSheets: Created sheet " + string(sheet_id) + " (" + string(width) + "x" + string(height) + ") with " + string(page_index) + " pages and " + string(added_sprites_n) + " sprites in " + string(get_timer() - time) + " microseconds");
 	++sheet_id
 	
 	return sheet
