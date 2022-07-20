@@ -1,1 +1,0 @@
-#macro __PNS_ALLOW_TEXTURES false // Whether or not to keep original copies of texture paged sprites for getting textures. Reduces memory usage if disabled.
